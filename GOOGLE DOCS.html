@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión Docs - Edición Escolar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Fredoka para amabilidad y legibilidad -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #e0f7fa; /* Azul muy suave y calmante */
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* --- FONDO ANIMADO --- */
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(#4fd1c5 1.5px, transparent 1.5px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: -2;
+            animation: panBackground 60s linear infinite;
+        }
+        @keyframes panBackground {
+            from { background-position: 0 0; }
+            to { background-position: 100% 100%; }
+        }
+
+        /* --- ESTILOS DE UI --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 4px solid #ffffff;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                inset 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-game {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote */
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-game:active {
+            transform: scale(0.95) translateY(4px);
+            box-shadow: none !important;
+        }
+        
+        /* Efecto de brillo al pasar el mouse */
+        .btn-game::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .btn-game:hover::before {
+            left: 100%;
+        }
+
+        /* --- ANIMACIONES PERSONALES --- */
+        .float-gentle { animation: float 4s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .pulse-soft { animation: pulseSoft 2s infinite; }
+        @keyframes pulseSoft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.95); }
+        }
+
+        /* Animación nube flotante en briefing */
+        .cloud-float { animation: cloudMove 3s ease-in-out infinite alternate; }
+        @keyframes cloudMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="h-screen w-full flex flex-col items-center justify-center relative text-slate-800">
+
+    <!-- Fondo -->
+    <div class="bg-pattern"></div>
+    <div class="absolute top-10 left-10 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+    <div class="absolute top-10 right-10 w-64 h-64 bg-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-32 left-1/2 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+
+    <!-- PANTALLA DE INICIO (PORTADA) -->
+    <div id="start-screen" class="glass-panel p-10 rounded-[3rem] w-11/12 max-w-lg text-center relative z-10 flex flex-col items-center gap-6 transform transition-all hover:scale-[1.01]">
+        
+        <!-- Mascota Intro -->
+        <div class="w-40 h-40 relative float-gentle">
+            <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
+                <rect x="40" y="50" width="120" height="110" rx="30" fill="#FFFFFF" stroke="#2563EB" stroke-width="8" />
+                <rect x="55" y="70" width="90" height="70" rx="15" fill="#DBEAFE" />
+                <g id="intro-face">
+                    <circle cx="80" cy="95" r="8" fill="#1E40AF" />
+                    <circle cx="120" cy="95" r="8" fill="#1E40AF" />
+                    <path d="M 80 115 Q 100 130 120 115" stroke="#1E40AF" stroke-width="5" fill="none" stroke-linecap="round" />
+                </g>
+                <line x1="100" y1="50" x2="100" y2="20" stroke="#2563EB" stroke-width="6" />
+                <circle cx="100" cy="20" r="12" fill="#F43F5E" class="animate-pulse" />
+                <path d="M 40 100 Q 20 120 25 90" stroke="#2563EB" stroke-width="8" stroke-linecap="round" fill="none" />
+                <path d="M 160 100 Q 180 80 175 110" stroke="#2563EB" stroke-width="8" stroke-linecap="round" fill="none" />
+            </svg>
+        </div>
+
+        <div>
+            <h1 class="text-5xl font-black text-blue-600 mb-2 tracking-tight drop-shadow-sm">Misión Docs</h1>
+            <p class="text-xl font-medium text-slate-500">Aprende, Juega y Domina</p>
+        </div>
+
+        <div class="bg-blue-50 p-4 rounded-2xl text-sm text-blue-800 font-semibold w-full">
+            <p>🤖 "¡Hola! Soy Docu-Bot. ¿Me ayudas a escribir mi tarea?"</p>
+        </div>
+
+        <button onclick="goToBriefing()" class="btn-game w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white text-3xl font-bold py-5 rounded-2xl shadow-[0_6px_0_rgb(29,78,216)] flex items-center justify-center gap-3 group">
+            <span>RECIBIR MISIÓN</span> 
+            <i data-lucide="clipboard-list" class="group-hover:scale-110 transition-transform"></i>
+        </button>
+    </div>
+
+    <!-- PANTALLA DE BRIEFING (EXPLICACIÓN PEDAGÓGICA) -->
+    <div id="briefing-screen" class="hidden glass-panel p-8 rounded-[3rem] w-11/12 max-w-2xl text-center relative z-10 flex-col items-center gap-6">
+        
+        <div class="absolute -top-10 bg-yellow-400 text-yellow-900 font-black px-6 py-2 rounded-full shadow-lg border-4 border-white transform rotate-2">
+            TOP SECRET: NIVEL 1
+        </div>
+
+        <h2 class="text-4xl font-black text-slate-700 mt-4 mb-2">¿Qué es Google Docs?</h2>
+
+        <div class="flex flex-col md:flex-row items-center gap-6 bg-blue-50 p-6 rounded-3xl border-2 border-blue-100 w-full">
+            <div class="w-32 h-32 flex-shrink-0 cloud-float text-blue-500">
+                <!-- Icono de Nube Grande -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><path d="M17.5 19c0-3.037-2.463-5.5-5.5-5.5S6.5 15.963 6.5 19"/><path d="M11.562 13.5a6 6 0 0 0-5.637-2.906A5.84 5.84 0 0 0 0 16.406V19h23v-2.719a6 6 0 0 0-5.83-5.918A5.96 5.96 0 0 0 11.562 13.5z"/></svg>
+            </div>
+            <div class="text-left space-y-3">
+                <p class="text-lg font-bold text-slate-700">imagina una <span class="text-blue-600">hoja de papel infinita</span> que vive en internet.</p>
+                <ul class="text-slate-600 space-y-2 text-sm md:text-base font-medium">
+                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="text-green-500 w-5 h-5"></i> Escribes tareas, cuentos y cartas.</li>
+                    <li class="flex items-center gap-2"><i data-lucide="users" class="text-purple-500 w-5 h-5"></i> Tus amigos pueden escribir contigo a la vez.</li>
+                    <li class="flex items-center gap-2"><i data-lucide="save" class="text-orange-500 w-5 h-5"></i> <b>¡Magia!</b> Se guarda solo, nunca pierdes nada.</li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="text-slate-500 font-bold italic">"Tu misión: Demostrar que sabes usar las herramientas secretas."</p>
+
+        <button onclick="startGame()" class="btn-game w-full bg-gradient-to-r from-green-400 to-green-600 text-white text-3xl font-bold py-5 rounded-2xl shadow-[0_6px_0_rgb(21,128,61)] flex items-center justify-center gap-3 group">
+            <span>¡ENTENDIDO! JUGAR</span> 
+            <i data-lucide="play-circle" class="group-hover:translate-x-1 transition-transform"></i>
+        </button>
+    </div>
+
+    <!-- PANTALLA DE JUEGO -->
+    <div id="game-screen" class="hidden w-full max-w-5xl flex-col h-[95vh] p-4 z-10 justify-between">
+        
+        <!-- HUD Superior -->
+        <div class="flex justify-between items-center mb-4 bg-white/60 backdrop-blur-md p-3 rounded-full border-2 border-white shadow-sm">
+            <div id="mascot-wrapper" class="w-16 h-16 -my-4 ml-2 cursor-pointer hover:scale-110 transition-transform">
+                <!-- SVG inyectado JS -->
+            </div>
+
+            <div class="flex-grow mx-6 flex flex-col justify-center">
+                <div class="flex justify-between text-xs font-bold text-slate-400 mb-1 px-1">
+                    <span>PROGRESO</span>
+                    <span id="q-counter">1/8</span>
+                </div>
+                <div class="h-4 bg-slate-200 rounded-full overflow-hidden border border-slate-300">
+                    <div id="progress-fill" class="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full w-0 transition-all duration-700 ease-out relative">
+                        <div class="absolute inset-0 bg-white/20 animate-[pulse_2s_infinite]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white px-5 py-2 rounded-full border-2 border-indigo-100 shadow-sm min-w-[120px] text-center">
+                <p class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">PUNTOS</p>
+                <p id="score-display" class="text-2xl font-black text-indigo-600 leading-none">0</p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Pregunta -->
+        <div id="question-card" class="glass-panel flex-grow rounded-[2.5rem] p-6 md:p-12 flex flex-col justify-center relative mb-4 transform transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 p-10 opacity-5 pointer-events-none transform rotate-12">
+                 <i data-lucide="file-signature" class="w-64 h-64 text-slate-900"></i>
+            </div>
+
+            <div id="q-content" class="relative z-10 w-full max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-6 mb-8">
+                    <div id="q-icon-bg" class="w-24 h-24 min-w-[6rem] rounded-3xl flex items-center justify-center shadow-md transform -rotate-3 transition-all duration-300 ring-4 ring-white">
+                        <!-- Icono Dinámico -->
+                    </div>
+                    <h2 id="q-text" class="text-3xl md:text-4xl font-bold text-slate-700 leading-tight text-center md:text-left drop-shadow-sm">
+                        <!-- Texto Pregunta -->
+                    </h2>
+                </div>
+
+                <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <!-- Botones generados dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE FEEDBACK -->
+    <div id="feedback-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-opacity">
+        <div id="feedback-card" class="bg-white p-8 rounded-[2.5rem] shadow-2xl text-center w-11/12 max-w-md border-8 border-white relative transform scale-0 transition-transform duration-300 overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-400 via-yellow-400 to-blue-400"></div>
+            <div id="feedback-icon" class="text-7xl mb-4 transform transition-transform hover:scale-110 select-none"></div>
+            <h2 id="feedback-title" class="text-4xl font-black mb-2 tracking-tight text-slate-800"></h2>
+            
+            <div class="bg-slate-50 rounded-xl p-4 mb-6 border-2 border-slate-100 text-left">
+                <p class="text-xs font-bold text-slate-400 uppercase mb-1">Dato Curioso / Explicación:</p>
+                <p id="feedback-explanation" class="text-lg font-medium text-slate-600 leading-snug"></p>
+            </div>
+
+            <button onclick="nextQuestion()" id="feedback-btn" class="btn-game w-full text-white text-xl font-bold py-4 rounded-2xl shadow-lg flex justify-center items-center gap-2 group">
+                Siguiente <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANTALLA FINAL -->
+    <div id="end-screen" class="hidden glass-panel p-10 rounded-[3rem] w-11/12 max-w-lg text-center relative z-20 flex flex-col items-center border-white/80 shadow-2xl">
+        <div class="relative mb-6">
+            <div class="absolute inset-0 bg-yellow-300 rounded-full blur-2xl opacity-60 animate-pulse"></div>
+            <span class="text-9xl relative z-10 drop-shadow-2xl filter hover:brightness-110 transition-all cursor-default">🎓</span>
+        </div>
+        
+        <h1 class="text-5xl font-black text-slate-800 mb-2">¡CURSO COMPLETADO!</h1>
+        <p class="text-slate-500 text-xl font-bold mb-8">Ya eres un Maestro Digital</p>
+
+        <div class="w-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-6 mb-8 border-2 border-indigo-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 opacity-10"><i data-lucide="award" class="w-32 h-32"></i></div>
+            <p class="text-indigo-400 font-bold uppercase tracking-widest text-xs mb-1">Puntaje Final</p>
+            <p id="final-score" class="text-6xl font-black text-indigo-600 tracking-tighter">0</p>
+        </div>
+
+        <button onclick="location.reload()" class="btn-game w-full bg-violet-500 hover:bg-violet-600 text-white text-2xl font-bold py-5 rounded-3xl shadow-[0_8px_0_rgb(109,40,217)] flex items-center justify-center gap-3 group">
+            <i data-lucide="rotate-ccw" class="group-hover:-rotate-90 transition-transform"></i> Jugar Otra Vez
+        </button>
+    </div>
+
+    <script>
+        // --- MASCOTA SVG ---
+        const botSVG = `
+        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md overflow-visible">
+            <g id="bot-body-game" class="transform transition-transform origin-center">
+                <rect x="40" y="50" width="120" height="110" rx="25" fill="#FFFFFF" stroke="#2563EB" stroke-width="6" />
+                <rect x="55" y="70" width="90" height="70" rx="12" fill="#DBEAFE" />
+                <g id="face-expression">
+                    <circle cx="80" cy="95" r="7" fill="#1E40AF" class="bot-eye"/>
+                    <circle cx="120" cy="95" r="7" fill="#1E40AF" class="bot-eye"/>
+                    <path d="M 85 115 Q 100 122 115 115" stroke="#1E40AF" stroke-width="4" fill="none" stroke-linecap="round" />
+                </g>
+                <line x1="100" y1="50" x2="100" y2="25" stroke="#2563EB" stroke-width="5" />
+                <circle cx="100" cy="25" r="8" fill="#F43F5E" id="bot-light" />
+            </g>
+        </svg>`;
+
+        // --- PREGUNTAS (TEXTO ACTUALIZADO Y POSITIVO) ---
+        const questions = [
+            { 
+                t: "¿Qué hace que el título se vea MÁS GRUESO y oscuro?", 
+                i: "bold", 
+                o: ["Cursiva (I)", "Negrita (B)", "Subrayado (U)", "Tachar"], 
+                c: 1, 
+                color: "rose", 
+                exp: "¡Exacto! La 'B' viene de 'Bold' (Negrita). Se usa para resaltar lo más importante." 
+            },
+            { 
+                t: "¡Oh no! Borraste tu cuento. ¿Qué truco lo recupera?", 
+                i: "undo-2", 
+                o: ["Pedir ayuda", "Reiniciar PC", "Deshacer (Ctrl+Z)", "Volver a empezar"], 
+                c: 2, 
+                color: "blue", 
+                exp: "¡El salvavidas! Ctrl + Z deshace la última acción. ¡Es como viajar en el tiempo!" 
+            },
+            { 
+                t: "¿Con qué botón cambiamos el COLOR de las letras?", 
+                i: "palette", 
+                o: ["Bote de Pintura", "La A con color", "El Lápiz", "La Tijera"], 
+                c: 1, 
+                color: "amber", 
+                exp: "¡Correcto! La 'A' con la barra de color debajo cambia el color del texto seleccionado." 
+            },
+            { 
+                t: "Tu amigo quiere ayudar en el documento. ¿Qué haces?", 
+                i: "users", 
+                o: ["Imprimir", "Guardar", "Compartir", "Copiar"], 
+                c: 2, 
+                color: "emerald", 
+                exp: "¡Muy bien! 'Compartir' permite trabajar en equipo en tiempo real desde casas diferentes." 
+            },
+            { 
+                t: "Línea roja ondulada bajo una palabra... ¿Qué significa?", 
+                i: "spell-check", 
+                o: ["¡Qué bonito!", "Posible error", "Es un link", "Es un dibujo"], 
+                c: 1, 
+                color: "violet", 
+                exp: "¡Ojo de águila! El corrector te avisa que esa palabra podría estar mal escrita." 
+            },
+            { 
+                t: "¿Cómo pones la foto de tu mascota en la hoja?", 
+                i: "image-plus", 
+                o: ["Archivo > Nuevo", "Formato", "Insertar > Imagen", "Ayuda"], 
+                c: 2, 
+                color: "pink", 
+                exp: "¡Así es! El menú 'Insertar' sirve para poner cosas nuevas como fotos, tablas o dibujos." 
+            },
+            { 
+                t: "Ctrl + C sirve para 'Copiar'. ¿Y para PEGAR?", 
+                i: "clipboard-copy", 
+                o: ["Ctrl + P", "Ctrl + V", "Ctrl + X", "Ctrl + Z"], 
+                c: 1, 
+                color: "cyan", 
+                exp: "¡Bingo! 'V' de pegar. ¡Una combinación inseparable con 'Copiar'!" 
+            },
+            { 
+                t: "Para inclinar la letra (Cursiva), usas la...", 
+                i: "italic", 
+                o: ["I", "B", "U", "S"], 
+                c: 0, 
+                color: "teal", 
+                exp: "¡Correcto! La 'I' es de 'Italic' (Cursiva). Se usa para títulos de libros o palabras extranjeras." 
+            }
+        ];
+
+        let state = { q: 0, score: 0, streak: 0 };
+
+        window.onload = () => {
+            document.getElementById('mascot-wrapper').innerHTML = botSVG;
+            lucide.createIcons();
+            anime({ targets: '#bot-body-game', translateY: [-3, 3], duration: 2500, direction: 'alternate', loop: true, easing: 'easeInOutQuad' });
+        };
+
+        // --- FLUJO DEL JUEGO ---
+
+        function goToBriefing() {
+            const start = document.getElementById('start-screen');
+            anime({
+                targets: start, scale: 0.9, opacity: 0, duration: 400, easing: 'easeInBack',
+                complete: () => {
+                    start.classList.add('hidden');
+                    const briefing = document.getElementById('briefing-screen');
+                    briefing.classList.remove('hidden');
+                    briefing.classList.add('flex');
+                    
+                    // Animar entrada del briefing
+                    anime({ targets: briefing, scale: [0.8, 1], opacity: [0, 1], duration: 500, easing: 'easeOutBack' });
+                }
+            });
+        }
+
+        function startGame() {
+            const briefing = document.getElementById('briefing-screen');
+            anime({
+                targets: briefing, scale: 1.1, opacity: 0, duration: 400, easing: 'easeInBack',
+                complete: () => {
+                    briefing.classList.add('hidden');
+                    briefing.classList.remove('flex'); // Importante quitar flex para ocultar bien
+                    
+                    const game = document.getElementById('game-screen');
+                    game.classList.remove('hidden');
+                    game.classList.add('flex');
+                    loadQuestion();
+                }
+            });
+        }
+
+        function loadQuestion() {
+            const qData = questions[state.q];
+            document.getElementById('q-text').innerText = qData.t;
+            document.getElementById('q-counter').innerText = `${state.q + 1} / ${questions.length}`;
+            
+            const iconBg = document.getElementById('q-icon-bg');
+            iconBg.className = `w-24 h-24 min-w-[6rem] rounded-3xl flex items-center justify-center shadow-md transform -rotate-3 transition-all duration-300 ring-4 ring-white bg-${qData.color}-100 text-${qData.color}-600`;
+            iconBg.innerHTML = `<i data-lucide="${qData.i}" class="w-12 h-12"></i>`;
+            
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            const optionColors = ['bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-800', 'bg-green-50 hover:bg-green-100 border-green-200 text-green-800', 'bg-amber-50 hover:bg-amber-100 border-amber-200 text-amber-800', 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-800'];
+
+            qData.o.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `btn-game w-full p-6 rounded-2xl border-b-4 text-xl font-bold text-left flex items-center shadow-sm ${optionColors[idx % 4]} group`;
+                btn.innerHTML = `<span class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center mr-4 text-sm font-black opacity-60 group-hover:scale-110 transition-transform">${String.fromCharCode(65+idx)}</span><span class="flex-grow">${opt}</span>`;
+                btn.onclick = () => handleAnswer(idx);
+                btn.style.opacity = '0'; btn.style.transform = 'translateY(20px)';
+                grid.appendChild(btn);
+            });
+            
+            lucide.createIcons();
+            setBotMood('thinking');
+            anime({ targets: '#question-card', opacity: [0, 1], translateY: [20, 0], duration: 600, easing: 'easeOutCubic' });
+            anime({ targets: '#options-grid button', opacity: 1, translateY: 0, delay: anime.stagger(100, {start: 200}), easing: 'easeOutBack' });
+            document.getElementById('progress-fill').style.width = `${(state.q / questions.length) * 100}%`;
+        }
+
+        function handleAnswer(idx) {
+            const qData = questions[state.q];
+            const isCorrect = idx === qData.c;
+            const overlay = document.getElementById('feedback-overlay');
+            const card = document.getElementById('feedback-card');
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const exp = document.getElementById('feedback-explanation');
+            const btn = document.getElementById('feedback-btn');
+
+            if (isCorrect) {
+                state.score += 1000 + (state.streak * 100);
+                state.streak++;
+                card.className = "bg-white p-8 rounded-[2.5rem] shadow-2xl text-center w-11/12 max-w-md border-8 border-green-100 relative transform scale-0 overflow-hidden";
+                icon.innerHTML = "🌟";
+                title.innerHTML = "<span class='text-green-500'>¡Genial!</span>";
+                btn.className = "btn-game w-full bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-4 rounded-2xl shadow-[0_6px_0_rgb(21,128,61)] flex justify-center items-center gap-2 group";
+                setBotMood('happy'); triggerConfetti();
+            } else {
+                state.streak = 0;
+                card.className = "bg-white p-8 rounded-[2.5rem] shadow-2xl text-center w-11/12 max-w-md border-8 border-orange-100 relative transform scale-0 overflow-hidden";
+                icon.innerHTML = "💡";
+                title.innerHTML = "<span class='text-orange-400'>¡Casi!</span>";
+                btn.className = "btn-game w-full bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-4 rounded-2xl shadow-[0_6px_0_rgb(37,99,235)] flex justify-center items-center gap-2 group";
+                setBotMood('neutral');
+            }
+            exp.innerText = qData.exp;
+            updateScore();
+            overlay.classList.remove('hidden');
+            anime({ targets: card, scale: [0.8, 1], opacity: [0, 1], duration: 400, easing: 'easeOutElastic(1, .8)' });
+        }
+
+        function updateScore() {
+            const scoreEl = document.getElementById('score-display');
+            anime({ targets: { val: parseInt(scoreEl.innerText) }, val: state.score, round: 1, easing: 'easeOutExpo', update: function(anim) { scoreEl.innerText = anim.animatables[0].target.val; } });
+        }
+
+        function nextQuestion() {
+            const card = document.getElementById('feedback-card');
+            anime({
+                targets: card, scale: 0.8, opacity: 0, duration: 300, easing: 'easeInBack',
+                complete: () => {
+                    document.getElementById('feedback-overlay').classList.add('hidden');
+                    state.q++;
+                    if (state.q < questions.length) { loadQuestion(); } else { showEndScreen(); }
+                }
+            });
+        }
+
+        function showEndScreen() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('end-screen').classList.remove('hidden');
+            document.getElementById('end-screen').classList.add('flex');
+            anime({ targets: document.getElementById('final-score'), innerHTML: [0, state.score], round: 1, easing: 'easeOutExpo', duration: 2000 });
+            var end = Date.now() + 3000;
+            (function frame() { confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#60A5FA', '#34D399', '#F472B6'] }); confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#60A5FA', '#34D399', '#F472B6'] }); if (Date.now() < end) requestAnimationFrame(frame); }());
+        }
+
+        function setBotMood(mood) {
+            const face = document.getElementById('face-expression');
+            const light = document.getElementById('bot-light');
+            const body = document.getElementById('bot-body-game');
+            if (mood === 'happy') {
+                face.innerHTML = `<circle cx="80" cy="95" r="7" fill="#1E40AF"/><circle cx="120" cy="95" r="7" fill="#1E40AF"/><path d="M 80 110 Q 100 130 120 110" stroke="#1E40AF" stroke-width="4" fill="none" stroke-linecap="round" />`;
+                light.setAttribute('fill', '#22C55E');
+                anime({ targets: body, translateY: -15, duration: 400, direction: 'alternate', loop: 2, easing: 'easeOutQuad' });
+            } else if (mood === 'thinking') {
+                face.innerHTML = `<circle cx="80" cy="90" r="7" fill="#1E40AF"/><circle cx="120" cy="90" r="7" fill="#1E40AF"/><line x1="90" y1="115" x2="110" y2="115" stroke="#1E40AF" stroke-width="4" stroke-linecap="round" />`;
+                light.setAttribute('fill', '#FBBF24');
+            } else {
+                face.innerHTML = `<circle cx="80" cy="95" r="7" fill="#1E40AF"/><circle cx="120" cy="95" r="7" fill="#1E40AF"/><path d="M 85 115 Q 100 122 115 115" stroke="#1E40AF" stroke-width="4" fill="none" stroke-linecap="round" />`;
+                light.setAttribute('fill', '#3B82F6');
+            }
+        }
+
+        function triggerConfetti() {
+            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, gravity: 1.2, scalar: 0.9 });
+        }
+    </script>
+</body>
+</html>
